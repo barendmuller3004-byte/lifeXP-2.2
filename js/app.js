@@ -2340,7 +2340,7 @@ function iconGrip(){ return '<svg viewBox="0 0 24 24" width="16" height="16" fil
    exact domain this file is hosted on — it will NOT work from a local
    file:// path or an in-chat preview sandbox. Replace the placeholder below
    with your own Client ID once you have one. */
-const GOOGLE_CLIENT_ID = 'YOUR_GOOGLE_OAUTH_CLIENT_ID.apps.googleusercontent.com';
+const GOOGLE_CLIENT_ID = '72502977844-2q156o63br5p6dhvjtnvd6aeoccb0ea5.apps.googleusercontent.com';
 function initGoogleSignIn(targetId){
   const btnEl = document.getElementById(targetId||'googleSignInBtn');
   if(!btnEl || state.googleAuth) return; // already signed in, nothing to render
