@@ -2450,11 +2450,17 @@ async function pushTaskToGoogleCalendar(task){
       headers: { 'Authorization':'Bearer '+gcalAccessToken, 'Content-Type':'application/json' },
       body: JSON.stringify({ summary: task.title, description:'Added from LifeXP', start:{date:eventDate}, end:{date:eventDate} })
     });
-    if(!res.ok){ if(res.status===401) gcalAccessToken = null; return; }
+    if(!res.ok){
+      const body = await res.text().catch(()=>'');
+      console.error('Calendar push failed: HTTP '+res.status, body);
+      if(res.status===401){ gcalAccessToken = null; }
+      else { showToast('Calendar sync failed — check the browser console for details'); }
+      return;
+    }
     const data = await res.json();
     task.gcalEventId = data.id;
     saveState();
-  }catch(e){ console.error('Calendar push failed:', e); }
+  }catch(e){ console.error('Calendar push failed:', e); showToast('Calendar sync failed — check the browser console for details'); }
 }
 function maybeGoogleSync(task){
   if(state.settings.calendar && state.settings.calendar.googleSyncEnabled && gcalAccessToken){
