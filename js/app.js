@@ -1577,7 +1577,7 @@ function renderFocusBar(){
     return;
   }
   const pending = state.taskOrder.map(id=>state.tasks.find(t=>t.id===id)).filter(t=>t && !t.completed && (!t.dueDate || t.dueDate<=todayISO()));
-  const doneToday = state.tasks.filter(t=>t.completed && t.completedAt>=startOfTodayTs()).length;
+  const todayIso = todayISO();
   const totalToday = doneToday + pending.length;
   const dayPct = totalToday ? Math.round((doneToday/totalToday)*100) : 0;
   wrap.innerHTML = '<div class="hero-card"><div class="hero-eyebrow" onclick="scrollToTask(\''+target.id+'\')">Today\'s Focus</div>' +
@@ -3675,7 +3675,7 @@ function setCategoryFilter(cat){
 function renderCategoryFilterChips(){
   const wrap = document.getElementById('categoryFilterWrap');
   if(!wrap) return;
-  const pending = state.taskOrder.map(id=>state.tasks.find(t=>t.id===id)).filter(t=>t && !t.completed);
+ const pending = state.taskOrder.map(id=>state.tasks.find(t=>t.id===id)).filter(t=>t && !t.completed && (!t.dueDate || t.dueDate<=todayISO()));
   const counts = {};
   pending.forEach(t=>{ const c = (t.category && CATEGORY_MAP[t.category]) ? t.category : 'personal'; counts[c] = (counts[c]||0)+1; });
   const present = CATEGORIES.filter(c=>counts[c.id]>0);
@@ -3745,7 +3745,7 @@ function renderNextUp(){
   if(item){
     meta = closestDays===0 ? 'Today' : closestDays===1 ? 'Tomorrow' : 'In '+closestDays+'d';
   } else {
-    item = state.taskOrder.map(id=>state.tasks.find(t=>t.id===id)).find(t=>t && !t.completed && t.id!==heroId);
+    item = state.taskOrder.map(id=>state.tasks.find(t=>t.id===id)).find(t=>t && !t.completed && t.id!==heroId && (!t.dueDate || t.dueDate<=todayISO()));
     if(item) meta = '+'+item.estXp+' XP';
   }
 
